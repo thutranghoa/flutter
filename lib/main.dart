@@ -1,6 +1,6 @@
 import 'package:mid/components/my_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:mid/widgets/product_view.dart';
+import 'package:mid/widgets/product_view/product_view.dart';
 
 void main() {
   runApp( MyApp());
