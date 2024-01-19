@@ -1,97 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:mid/widgets/product_view/product.dart';
 
-class FormEditProduct extends StatefulWidget {
-  FormEditProduct({
-    super.key,
-    this.cate,
-  });
+class EditProductPage extends StatefulWidget {
+  final Product product;
 
-  final List<Product> cate;
+  EditProductPage({required this.product});
 
   @override
-  State<FormEditProduct> createState() => _FormEditProductState();
+  _EditProductPageState createState() => _EditProductPageState();
 }
 
-class _FormEditProductState extends State<FormEditProduct> {
-  final nameController = TextEditingController();
-  final urlController = TextEditingController();
+class _EditProductPageState extends State<EditProductPage> {
+  late TextEditingController nameController;
+  late TextEditingController urlController;
 
-  int selectedIndex = -1;
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controllers with existing product data
+    nameController = TextEditingController(text: widget.product.name);
+    urlController = TextEditingController(text: widget.product.ImgUrl);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Edit product'),),
+      appBar: AppBar(
+        title: Text('Edit Product'),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-              TextField(
+            TextField(
               controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Product Name',
-                border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ))),),
-            const SizedBox(height: 20),
-            // TextField(
-            //   controller: nameController,
-            //   decoration: const InputDecoration(
-            //       labelText: 'Price',
-            //       border: OutlineInputBorder(
-            //           borderRadius: BorderRadius.all(
-            //             Radius.circular(10),
-            //           ))),
-            // ),
-            // const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // ElevatedButton(
-                //     onPressed: (){
-                //       String name = nameController.text.trim();
-                //       String url = urlController.text.trim();
-                //       if (name.isNotEmpty && url.isNotEmpty){
-                //         setState(() {
-                //           nameController.text = '';
-                //           urlController.text = '';
-                //           cate.add(Product(name: name, ImgUrl: url));
-                //         });
-                //       }
-                //     },
-                //     child: Text('Save')),
-                ElevatedButton(
-                    onPressed: (){
-                      String name = nameController.text.trim();
-                      String url = urlController.text.trim();
-                      if (name.isNotEmpty && url.isNotEmpty){
-                        setState(() {
-                          nameController.text = '';
-                          urlController.text = '';
-
-                          cate[selectedIndex].name = name;
-                          cate[selectedIndex].ImgUrl = url;
-                          selectedIndex = -1 ;
-                        });
-                      }
-                    },
-                    child: Text('Save')),
-              ],
+              decoration: InputDecoration(labelText: 'Product Name'),
             ),
-            // cate.isEmpty
-            // ? Text (
-            //   'No product ...',style: TextStyle(fontSize: 22),
-            // )
-            //     : Expanded(
-            //     child: ListView.builder(
-            //         itemBuilder: (context, index) => getRow(index),
-            //     )
-            // )
+            SizedBox(height: 10),
+            TextField(
+              controller: urlController,
+              decoration: InputDecoration(labelText: 'Img URL'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Update the product data and pop the current page
+                final updatedProduct = Product(
+                  name: nameController.text,
+                  ImgUrl: urlController.text,
+                );
 
+                // Return the updated product to the previous page
+                Navigator.pop(context, updatedProduct);
+              },
+              child: Text('Save Changes'),
+            ),
           ],
         ),
       ),
