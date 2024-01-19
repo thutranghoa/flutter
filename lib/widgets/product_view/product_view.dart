@@ -4,6 +4,7 @@ import 'package:mid/components/my_drawer.dart';
 import 'package:mid/widgets/container/rounded_container.dart';
 import 'package:mid/widgets/container/search_container.dart';
 import 'package:mid/widgets/product_view/Category_tab.dart';
+import 'package:mid/widgets/product_view/form_edit_product.dart';
 import 'package:mid/widgets/product_view/product.dart';
 import 'package:mid/widgets/product_view/tabBar.dart';
 
@@ -11,13 +12,21 @@ import 'package:mid/widgets/product_view/tabBar.dart';
 import '../carouse/banner_slider.dart';
 
 // --------------- 5:50 video 18-----------
-class ProductView extends StatelessWidget {
+class ProductView extends StatefulWidget {
   ProductView({super.key});
   static List<String> sports_name = ['Sport 0', 'Sport 1','Sport 3','Sport 04'];
   static List sport_url = ['assets/images/product1.png','assets/images/product1.png','assets/images/product1.png','assets/images/product1.png'];
   static List<double> sport_price = [10.0, 11.0,12.2,13.2];
-  final List<Product> sports = List.generate(sports_name.length,
-          (index) => Product(name: '${sports_name[index]}', price: sport_price[index], ImgUrl: '${sport_url[index]}')
+
+  @override
+  State<ProductView> createState() => _ProductViewState();
+}
+
+class _ProductViewState extends State<ProductView> {
+  final List<Product> sports = List.generate(ProductView.sports_name.length,
+          (index) => Product(name: '${ProductView.sports_name[index]}'
+              // price: ProductView.sport_price[index]
+              , ImgUrl: '${ProductView.sport_url[index]}')
   );
 
   @override
@@ -70,7 +79,7 @@ class ProductView extends StatelessWidget {
             body: TabBarView(
               children: [
                 ListView.builder(
-                  itemCount: sports_name.length,
+                  itemCount: ProductView.sports_name.length,
                   itemBuilder: (context, index){
                     return Card(
                         child: SizedBox(
@@ -80,6 +89,29 @@ class ProductView extends StatelessWidget {
                               title: Text(sports[index].name),
                               leading: SizedBox(
                                 child: Image.asset(sports[index].ImgUrl, fit: BoxFit.fill,),
+                              ),
+                              trailing: SizedBox(
+                                width: 70,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>FormEditProduct()));
+  
+                                      },
+                                      child: Icon(Icons.edit),
+                                    ),
+                                    InkWell(
+                                      onTap: (){
+                                        setState(() {
+                                          sports.removeAt(index);
+                                        });
+                                      },
+                                      child: Icon(Icons.delete),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

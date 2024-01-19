@@ -1,14 +1,13 @@
 
 class Product {
-  final String name;
+  late final String name;
 
-  final String ImgUrl;
-  final double price;
+  late final String ImgUrl;
+  // final double ? price;
 
 
-  Product({
+  Product( {
     required this.name,
-    required this.price,
     required this.ImgUrl,
 });
 }
